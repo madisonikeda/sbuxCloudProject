@@ -82,8 +82,10 @@
 					    // $conn = new PDO("mysql:host=$dbhost;dbname=$dbname", $username, $password);
 					    $conn = new PDO("mysql:host=localhost", $username, $rootPw);
 					    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-					    $conn->query("CREATE DATABASE IF NOT EXISTS $dbname");
-					    $conn->query("use $dbname");
+					    $db="CREATE DATABASE $dbname";
+					    $conn->exec($db);
+					    $dbuse="use $dbname";
+					    $conn->exec($dbuse);
 					    $columns="firstname VARCHAR(30) NOT NULL, lastname VARCHAR(30), email VARCHAR(30), rate INT, improve VARCHAR(100), favorite VARCHAR(100)";
 					    $conn->exec("CREATE TABLE IF NOT EXISTS $dbname.responses ($columns)");
 					// } catch(PDOException $e) {
