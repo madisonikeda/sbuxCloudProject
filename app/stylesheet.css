@@ -1,0 +1,28 @@
+.containerSurvey {
+
+    position: fixed;
+    /* center the element */
+    right: 0;
+    left: 0;
+    padding: 25px;
+    margin-top: 20px;
+    margin-right: auto;
+    margin-left: auto;
+    /* give it dimensions */
+    min-height: 10em;
+    width: 30%;
+
+    border-width: 2px;
+    border-color: #004c00;
+    border-style: solid;
+    border-radius: 20px;
+}
+
+.header {
+    text-align: center;
+    color: #007f00;
+}
+
+p {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
