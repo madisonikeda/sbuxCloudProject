@@ -78,13 +78,17 @@
 					$dbname = "survey_responses";
 					$dbhost = "localhost";
 
-					try {
+					// try {
 					    // $conn = new PDO("mysql:host=$dbhost;dbname=$dbname", $username, $password);
-					    $conn = new PDO("mysql:host=$tcpAddr;dbname=$dbname;port=$tcpPort", $username, $rootPw);
+					    $conn = new PDO("mysql:host=$tcpAddr;port=$tcpPort", $username, $rootPw);
 					    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-					} catch(PDOException $e) {
-					    echo 'ERROR: ' . $e->getMessage();
-					}
+					    $conn->query("CREATE DATABASE IF NOT EXISTS $dbname");
+					    $conn->query("use $dbname");
+					    $columns="firstname VARCHAR(30) NOT NULL, lastname VARCHAR(30), email VARCHAR(30), rate INT, improve VARCHAR(100), favorite VARCHAR(100)";
+					    $conn->exec("CREATE TABLE IF NOT EXISTS $dbname.responses ($columns)");
+					// } catch(PDOException $e) {
+					//     echo 'ERROR: ' . $e->getMessage();
+					// }
 
 
 					$statement = $conn->prepare("INSERT INTO responses(firstname, lastname, email, rate, improve, favorite)
