@@ -73,14 +73,14 @@
 					$improve = $_POST["improve"];
 					$favorite = $_POST["favorite"];
 
-					$username = "root";
+					$username = "admin";
 					$password = "cmsurvey";
 					$dbname = "survey_responses";
 					$dbhost = "localhost";
 
 					// try {
 					    // $conn = new PDO("mysql:host=$dbhost;dbname=$dbname", $username, $password);
-					    $conn = new PDO("mysql:host=$tcpAddr;port=$tcpPort", $username, $rootPw);
+					    $conn = new PDO("mysql:host=localhost", $username, $rootPw);
 					    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 					    $conn->query("CREATE DATABASE IF NOT EXISTS $dbname");
 					    $conn->query("use $dbname");
