@@ -107,6 +107,7 @@
 
 					$stmt = $conn->prepare("SELECT * FROM responses");
 					$stmt->execute()
+						echo "<p>for sanity???</p>";
 					if ($stmt->rowCount() > 0) {
 						echo "<p>for sanity</p>";
 					}
