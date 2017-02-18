@@ -103,6 +103,14 @@
 					    "improve" => "$improve",
 					    "favorite" => "$favorite"
 					));
+
+
+					$stmt = $conn->prepare("SELECT * FROM responses");
+					if ($stmt->execute(array($_GET['firstname']))) {
+					  while ($row = $stmt->fetch()) {
+					   echo "<p>$row</p>";
+					  }
+					}
 					// echo "<p style='font-family=Arial'>Thank you, $firstname! You will be rewarded 10 stars in the next 3 days.";
 				}
 
