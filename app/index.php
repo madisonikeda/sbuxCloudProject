@@ -82,7 +82,7 @@
 					    // $conn = new PDO("mysql:host=$dbhost;dbname=$dbname", $username, $password);
 					    $conn = new PDO("mysql:host=localhost", $username, $rootPw);
 					    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-					    $db="CREATE DATABASE $dbname";
+					    $db="CREATE DATABASE IF NOT EXISTS $dbname";
 					    $conn->exec($db);
 					    $dbuse="use $dbname";
 					    $conn->exec($dbuse);
@@ -106,10 +106,12 @@
 
 
 					$stmt = $conn->prepare("SELECT * FROM responses");
-					if ($stmt->execute(array($_GET['firstname']))) {
-					  while ($row = $stmt->fetch()) {
+					$stmt->execute()
+					if ($stmt->rowCount() > 0) {
+						echo "<p>for sanity</p>";
+					}
+					while ($row = $stmt->fetch()) {
 					   echo "<p>$row</p>";
-					  }
 					}
 					// echo "<p style='font-family=Arial'>Thank you, $firstname! You will be rewarded 10 stars in the next 3 days.";
 				}
