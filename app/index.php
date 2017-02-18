@@ -93,27 +93,35 @@
 					// }
 
 
-					$statement = $conn->prepare("INSERT INTO responses(firstname, lastname, email, rate, improve, favorite)
-					    VALUES(:firstname, :lastname, :email, :rate, :improve, :favorite)");
-					$statement->execute(array(
-					    "firstname" => "$firstname",
-					    "lastname" => "$lastname",
-					    "email" => "$email",
-					    "rate" => $rate,
-					    "improve" => "$improve",
-					    "favorite" => "$favorite"
-					));
 
 
 					$stmt = $conn->prepare("SELECT * FROM responses");
-					$stmt->execute()
-						echo "<p>for sanity???</p>";
+					$stmt->execute();
 					if ($stmt->rowCount() > 0) {
 						echo "<p>for sanity</p>";
 					}
-					while ($row = $stmt->fetch()) {
-					   echo "<p>$row</p>";
-					}
+
+					class TableRows extends RecursiveIteratorIterator { 
+					    function __construct($it) { 
+					        parent::__construct($it, self::LEAVES_ONLY); 
+					    }
+
+					    function current() {
+					        return "<td style='width:150px;border:1px solid black;'>" . parent::current(). "</td>";
+					    }
+
+					    function beginChildren() { 
+					        echo "<tr>"; 
+					    } 
+
+					    function endChildren() { 
+					        echo "</tr>" . "\n";
+					    } 
+					} 
+					$result = $stmt->setFetchMode(PDO::FETCH_ASSOC); 
+				    foreach(new TableRows(new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) { 
+				        echo $v;
+				    }
 					// echo "<p style='font-family=Arial'>Thank you, $firstname! You will be rewarded 10 stars in the next 3 days.";
 				}
 
