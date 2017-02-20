@@ -119,12 +119,14 @@
 					        echo "</tr>" . "\n";
 					    } 
 					} 
+					
 					$result = $stmt->setFetchMode(PDO::FETCH_ASSOC); 
 				    foreach(new TableRows(new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) { 
 				        echo $v;
 				    }
 					// echo "<p style='font-family=Arial'>Thank you, $firstname! You will be rewarded 10 stars in the next 3 days.";
 				}
+
 
 
 				if (isset($_POST['submit'])) {
