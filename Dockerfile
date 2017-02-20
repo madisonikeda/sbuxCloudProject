@@ -1,4 +1,3 @@
-FROM tutum/lamp:latest
-RUN rm -fr /app && git clone https://github.com/madisonikeda/sbuxCloudProject.git /app
-EXPOSE 80 3306
-CMD ["/run.sh"]
+FROM php:apache
+RUN docker-php-ext-install pdo pdo_mysql
+COPY ./src/ /var/www/html/
