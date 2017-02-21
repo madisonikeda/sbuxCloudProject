@@ -60,11 +60,10 @@
 
 				function loadToDB() {
 
-					$rootPw = getenv('MYSQL_ENV_MYSQL_ROOT_PASSWORD');
-					$tcpAddr = getenv('MYSQL_PORT_3306_TCP_ADDR');
-					$tcpPort = getenv('MYSQL_PORT_3306_TCP_PORT');
-					echo "$tcpAddr $tcpPort $rootPw";
-					// $link = mysql_connect("$tcpAddr:$tcpPort", 'root', $rootPw);
+					$rootPw = getenv('MYSQL_ROOT_PASSWORD');
+					$tcpAddr = getenv('DB_PORT_3306_TCP_ADDR');
+					$tcpPort = getenv('DB_PORT_3306_TCP_PORT');
+					// echo "$tcpAddr $tcpPort $rootPw";
 
 					$firstname = $_POST["firstname"];
 					$lastname = $_POST["lastname"];
@@ -79,9 +78,9 @@
 					$dbhost = "localhost";
 
 					try {
+
 					    // $conn = new PDO("mysql:host=$dbhost;dbname=$dbname", $username, $password);
 					    $conn = new PDO("mysql:host=$tcpAddr;port=$tcpPort", $username, $rootPw);
-					    // $conn = new PDO("mysql:host=$dbhost;", $username, $password);
 					    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 					    $db="CREATE DATABASE IF NOT EXISTS $dbname";
 					    $conn->exec($db);
@@ -89,60 +88,53 @@
 					    $conn->exec($dbuse);
 					    $columns="firstname VARCHAR(30) NOT NULL, lastname VARCHAR(30), email VARCHAR(30), rate INT, improve VARCHAR(100), favorite VARCHAR(100)";
 					    $conn->exec("CREATE TABLE IF NOT EXISTS $dbname.responses ($columns)");
-					// } catch(PDOException $e) {
-					//     echo 'ERROR: ' . $e->getMessage();
-					// }
 
-					$statement = $conn->prepare("INSERT INTO responses(firstname, lastname, email, rate, improve, favorite)
-					    VALUES(:firstname, :lastname, :email, :rate, :improve, :favorite)");
-					$statement->execute(array(
-					    "firstname" => "$firstname",
-					    "lastname" => "$lastname",
-					    "email" => "$email",
-					    "rate" => $rate,
-					    "improve" => "$improve",
-					    "favorite" => "$favorite"
-					));
 
-					// echo "<p>for sanity</p>";
-					
-					$stmt = $conn->prepare("SELECT * FROM responses");
-					$stmt->execute();
-					// if ($stmt->rowCount() > 0) {
-					// 	echo "<p>for sanity????</p>";
-					// }
-						} catch(PDOException $e) {
+						$statement = $conn->prepare("INSERT INTO responses(firstname, lastname, email, rate, improve, favorite)
+						    VALUES(:firstname, :lastname, :email, :rate, :improve, :favorite)");
+						$statement->execute(array(
+						    "firstname" => "$firstname",
+						    "lastname" => "$lastname",
+						    "email" => "$email",
+						    "rate" => $rate,
+						    "improve" => "$improve",
+						    "favorite" => "$favorite"
+						));
+						
+						// $stmt = $conn->prepare("SELECT * FROM responses");
+						// $stmt->execute();
+
+						// class TableRows extends RecursiveIteratorIterator { 
+						//     function __construct($it) { 
+						//         parent::__construct($it, self::LEAVES_ONLY); 
+						//     }
+
+						//     function current() {
+						//         return "<td style='width:150px;border:1px solid black;'>" . parent::current(). "</td>";
+						//     }
+
+						//     function beginChildren() { 
+						//         echo "<tr>"; 
+						//     } 
+
+						//     function endChildren() { 
+						//         echo "</tr>" . "\n";
+						//     } 
+						// } 
+						
+						// $result = $stmt->setFetchMode(PDO::FETCH_ASSOC); 
+					 //    foreach(new TableRows(new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) { 
+					 //        echo $v;
+					 //    }
+					    echo "<p>Thank you, $firstname! You will be awarded 10 stars within 3 days!";
+					} catch(PDOException $e) {
 					    echo 'ERROR: ' . $e->getMessage();
 					}
-
-						class TableRows extends RecursiveIteratorIterator { 
-					    function __construct($it) { 
-					        parent::__construct($it, self::LEAVES_ONLY); 
-					    }
-
-					    function current() {
-					        return "<td style='width:150px;border:1px solid black;'>" . parent::current(). "</td>";
-					    }
-
-					    function beginChildren() { 
-					        echo "<tr>"; 
-					    } 
-
-					    function endChildren() { 
-					        echo "</tr>" . "\n";
-					    } 
-					} 
-					
-					$result = $stmt->setFetchMode(PDO::FETCH_ASSOC); 
-				    foreach(new TableRows(new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) { 
-				        echo $v;
-				    }
 				}
 
 
 				if (isset($_POST['submit'])) {
 					loadToDB();
-					echo "hi";
 				}
 					
 			?>

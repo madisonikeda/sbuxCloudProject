@@ -1,0 +1,18 @@
+db: 
+  image: mysql
+  ports:
+    - "3306:3306"
+  environment:
+    - MYSQL_ROOT_PASSWORD=cmsurvey
+
+web:
+  image: serverwpdo
+  ports:
+    - "80:80"
+  volumes:
+    - ./src:/var/www/html
+  environment:
+    - MYSQL_ROOT_PASSWORD=cmsurvey
+  links:
+    - db
+ 
